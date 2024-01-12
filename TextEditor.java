@@ -1,6 +1,9 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -60,8 +63,21 @@ public class TextEditor implements ActionListener {
         menuBar.add(edit);
 
         frame.setJMenuBar(menuBar);
-        frame.add(textArea);
+
+        JPanel jPanel = new JPanel();
+        jPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        jPanel.setLayout(new BorderLayout(0, 0));
+
+        jPanel.add(textArea, BorderLayout.CENTER);
+
+        JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        jPanel.add(scrollPane);
+
+        frame.add(jPanel);
+
         frame.setBounds(100, 100, 400, 400);
+        frame.setTitle("Text Editor");
         frame.setVisible(true);
         frame.setLayout(null);
     }
@@ -116,6 +132,29 @@ public class TextEditor implements ActionListener {
                     throw new RuntimeException(ex);
                 }
             }
+        }
+        if (e.getSource() == saveFile){
+            JFileChooser fileChooser = new JFileChooser("Desktop");
+
+            int chooseOption = fileChooser.showSaveDialog(null);
+
+            if (chooseOption == JFileChooser.APPROVE_OPTION){
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath()+".txt");
+
+                try{
+                    FileWriter fileWriter = new FileWriter(file);
+
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                    textArea.write(bufferedWriter);
+                    bufferedWriter.close();
+                } catch (IOException ioException){
+                    ioException.printStackTrace();
+                }
+            }
+        }
+        if (e.getSource() == newFile){
+            TextEditor textEditor = new TextEditor();
         }
     }
 }
