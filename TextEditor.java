@@ -91,5 +91,31 @@ public class TextEditor implements ActionListener {
         if (e.getSource() == close){
             System.exit(0);
         }
+
+        if (e.getSource() == openFile){
+            JFileChooser fileChooser = new JFileChooser("");
+            int chooseOPtion = fileChooser.showOpenDialog(null);
+            if (chooseOPtion == JFileChooser.APPROVE_OPTION){
+                File file = fileChooser.getSelectedFile();
+
+                String filePath = file.getPath();
+
+                try {
+                    FileReader fileReader = new FileReader(filePath);
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    String intermediate = "", output = "";
+
+                    while ((intermediate = bufferedReader.readLine()) != null){
+                        output += intermediate + "\n";
+                    }
+
+                    textArea.setText(output);
+                } catch (FileNotFoundException fileNotFound){
+                    fileNotFound.printStackTrace();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 }
