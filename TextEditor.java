@@ -72,6 +72,24 @@ public class TextEditor implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cut){
+            textArea.cut();
+        }
 
+        if (e.getSource() == copy){
+            textArea.copy();
+        }
+
+        if (e.getSource() == paste){
+            textArea.paste();
+        }
+
+        if (e.getSource() == selectAll){
+            textArea.selectAll();
+        }
+
+        if (e.getSource() == close){
+            System.exit(0);
+        }
     }
 }
